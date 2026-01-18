@@ -1,5 +1,7 @@
 # Agent Skill Kit (ASK)
 
+![Agent Skill Kit Banner](assets/banner.png)
+
 **Agent Skill Kit (ASK)** is a CLI toolkit for managing, distributing, and syncing skills across multiple AI agents. It serves as a unified "package manager" for your AI's capabilities, allowing you to define a skill once and deploy it to **Gemini, Claude, Codex, Antigravity, Cursor**, and more.
 
 ## 🧠 Why Agent Skill Kit?
