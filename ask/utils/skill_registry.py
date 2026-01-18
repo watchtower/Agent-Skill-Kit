@@ -36,7 +36,29 @@ def get_all_skills() -> List[Dict]:
                     skill = parse_skill(skill_yaml)
                     if skill:
                         skill["_path"] = str(skill_dir)
-                        skill["_readme"] = str(skill_dir / "README.md")
+                        
+                        # Detect instruction file (prefer SKILL.md)
+                        skill_md = skill_dir / "SKILL.md"
+                        readme_md = skill_dir / "README.md"
+                        if skill_md.exists():
+                            skill["_instruction_file"] = str(skill_md)
+                        elif readme_md.exists():
+                            skill["_instruction_file"] = str(readme_md)
+                            
+                        # Detect sidecars
+                        ref_md = skill_dir / "reference.md"
+                        if ref_md.exists():
+                            skill["_reference"] = str(ref_md)
+                            
+                        ex_md = skill_dir / "examples.md"
+                        if ex_md.exists():
+                            skill["_examples"] = str(ex_md)
+                            
+                        # Detect scripts
+                        scripts_dir = skill_dir / "scripts"
+                        if scripts_dir.exists() and scripts_dir.is_dir():
+                            skill["_scripts"] = str(scripts_dir)
+                            
                         skills.append(skill)
                 except Exception:
                     # Skip malformed skills
@@ -75,7 +97,7 @@ def get_skill_readme(skill: Dict) -> Optional[str]:
     """
     Get the README.md content for a skill.
     """
-    readme_path = skill.get("_readme")
+    readme_path = skill.get("_instruction_file")
     if readme_path:
         path = Path(readme_path)
         if path.exists():
