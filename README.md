@@ -38,21 +38,8 @@ pip install -e .
 
 ## 🛠 Usage
 
-### 1. List Available Skills
-View your library of skills, including descriptions and supported agents.
-```bash
-ask list
-```
-
-### 2. Create a New Skill
-Launch the interactive wizard to generate a standardized skill template.
-```bash
-ask create skill
-```
-*Tip: After creating, ask your AI to "Improve this skill with best practices".*
-
-### 3. Copy Skills to an Agent
-Deploy a skill to a specific agent using the **interactive wizard** or use flags for quick access.
+### 1. Copy Skills to an Agent ⭐
+**The primary way to use ASK** — Deploy skills to your AI agents using the interactive wizard.
 
 **Interactive Mode** (Recommended):
 ```bash
@@ -68,8 +55,29 @@ The wizard guides you through:
 # Copy specific skill
 ask copy gemini --skill bug-finder
 
-# Copy all compatible skills
+# Copy all compatible skills to an agent
 ask copy claude --all
+```
+
+### 2. List Available Skills
+View your library of skills, including descriptions and supported agents.
+```bash
+ask list
+```
+
+### 3. Create a New Skill
+**AI-Assisted** (Recommended):
+Simply ask your AI agent to create a skill for you:
+```
+"Create a new skill for Docker best practices"
+"Make a skill that teaches REST API design"
+```
+*Prerequisites: Deploy `ask-skill-creator` to your agent first (see [Available Skills](#-available-skills)).*
+
+**Manual CLI** (Alternative):
+Launch the interactive wizard to generate a standardized skill template.
+```bash
+ask create skill
 ```
 
 ### 4. Sync All Skills
@@ -95,7 +103,158 @@ This creates the necessary adapter code, making the new agent available instantl
 | **Codex** | `codex.md` | `~/.codex/instructions/` | Markdown |
 | **Cursor** | `.cursor/rules/` | `~/.cursor/rules/` | Markdown Rules |
 
-## 📐 Skill Format
+## � Available Skills
+
+ASK comes with a curated collection of skills to boost your AI agent's capabilities. Each skill provides specialized instructions and best practices.
+
+### Coding Skills
+
+#### 🐛 ask-bug-finder
+**Description**: Best practices for systematic bug hunting and debugging
+
+**How to Use**:
+```bash
+# Deploy to all agents
+ask copy --skill ask-bug-finder --all
+
+# Deploy to specific agent
+ask copy gemini --skill ask-bug-finder
+```
+
+**Use Cases**:
+- Systematic debugging of complex issues
+- Reproducing and isolating bugs
+- Using debugging tools effectively (debuggers, loggers, profilers)
+- Avoiding common bug patterns (off-by-one errors, null references, race conditions)
+- Binary search debugging and git bisect workflows
+
+---
+
+#### 🔄 ask-python-refactor
+**Description**: Best practices and guidelines for Python code refactoring
+
+**How to Use**:
+```bash
+ask copy antigravity --skill ask-python-refactor
+```
+
+**Use Cases**:
+- Improving Python code quality and maintainability
+- Applying clean code principles to Python projects
+- Refactoring legacy Python code
+- Following Python-specific best practices and idioms
+
+---
+
+#### ✅ ask-commit-assistance
+**Description**: Assist with code review, staging, and committing changes
+
+**How to Use**:
+```bash
+# Make this available to your preferred agent
+ask copy cursor --skill ask-commit-assistance
+```
+
+**Use Cases**:
+- Automated code review before commits
+- Generating meaningful commit messages (short and long formats)
+- Staging files systematically
+- Ensuring code quality before version control
+- Creating professional commit messages following best practices
+
+---
+
+#### 🔍 code-reviewer
+**Description**: An AI code reviewer that provides constructive feedback on code changes
+
+**How to Use**:
+```bash
+ask copy --skill code-reviewer --all
+```
+
+**Use Cases**:
+- Getting feedback on code quality, security, and performance
+- Identifying potential bugs and anti-patterns
+- Ensuring code follows best practices
+- Pre-commit code quality checks
+- Learning from constructive code review feedback
+
+---
+
+### Tooling Skills (Meta-Skills)
+
+#### 🛠️ ask-skill-creator
+**Description**: Teaches AI agents how to create skills for Agent Skill Kit
+
+**How to Use**:
+```bash
+# Deploy to all agents so they can create skills
+ask sync all
+```
+
+**Use Cases**:
+- **AI-Assisted Skill Creation**: Let your AI agent create new skills by simply asking
+  ```
+  "Create a skill for API design best practices"
+  ```
+- Standardizing skill structure and format
+- Automating skill scaffolding
+- Building your custom skill library
+- Teaching AI agents the skill creation workflow
+
+**Example Workflow**:
+1. Deploy this skill to your agent: `ask copy gemini --skill ask-skill-creator`
+2. Ask your agent: "Create a skill called 'docker-best-practices' for containerization guidelines"
+3. The agent generates the skill files automatically
+
+---
+
+#### 🎯 ask-add-agent
+**Description**: How to add support for new AI code editors to Agent Skill Kit
+
+**How to Use**:
+```bash
+# Deploy to help your agent add new editor support
+ask copy antigravity --skill ask-add-agent
+```
+
+**Use Cases**:
+- **Extending ASK**: Add support for new AI editors (Windsurf, Aider, etc.)
+- Creating custom agent adapters
+- Understanding the agent adapter architecture
+- Contributing new agent support to the project
+
+**Example Workflow**:
+1. Deploy this skill to your agent
+2. Run the wizard: `ask add-agent`
+3. Or ask your agent to help: "Add support for Windsurf editor"
+4. The agent follows the documented process to create the adapter
+
+---
+
+### 🚀 Quick Start with Skills
+
+```bash
+# View all available skills
+ask list
+
+# Deploy a specific skill to an agent
+ask copy gemini --skill ask-bug-finder
+
+# Deploy all compatible skills to an agent
+ask copy claude --all
+
+# Sync all skills to all agents
+ask sync all
+
+# Create your own skill (interactive)
+ask create skill
+
+# Or ask your AI agent to create one (if skill-creator is deployed)
+"Create a new skill for API testing best practices"
+```
+
+## �📐 Skill Format
 
 Each skill is a directory containing:
 *   **`skill.yaml`**: Metadata (name, description, tags, supported agents).
