@@ -50,13 +50,23 @@ ask create skill
 *Tip: After creating, ask your AI to "Improve this skill with best practices".*
 
 ### 3. Copy Skills to an Agent
-Deploy a skill to a specific agent. You will be prompted to choose the destination (Local or Global).
+Deploy a skill to a specific agent using the **interactive wizard** or use flags for quick access.
 
+**Interactive Mode** (Recommended):
 ```bash
-# Interactive copy (prompts for Local/Global)
+ask copy
+```
+The wizard guides you through:
+1. **Skill Selection**: Beautiful table showing all skills with descriptions and categories
+2. **Agent Selection**: Compatible agents highlighted for your chosen skill
+3. **Destination**: Choose between local (project) or global (user-wide) installation
+
+**Quick Mode** (with flags):
+```bash
+# Copy specific skill
 ask copy gemini --skill bug-finder
 
-# Copy all skills compatible with Claude
+# Copy all compatible skills
 ask copy claude --all
 ```
 
