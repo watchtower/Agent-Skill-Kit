@@ -211,6 +211,29 @@ ask copy antigravity --skill ask-pdf-processing
 
 ---
 
+#### 🧠 ask-skill-capture
+**Description**: Meta-skill. Analyzes the current session's lessons and saves them as a permanent reusable skill.
+
+**How to Use**:
+```bash
+# Deploy to your agent (e.g., Antigravity, Gemini)
+ask copy antigravity --skill ask-skill-capture
+```
+
+**Use Cases**:
+- **Chat-to-Code**: Turn "messy" chat context into a structured skill
+- **Constraint Capture**: Permanently save rules like "Always use FVM" or "Don't use Tailwind"
+- **Workflow Automation**: Save a successful debugging sequence as a reusable protocol
+- **Team Scaling**: Share tacit knowledge with your team via git-committed skills
+
+**Example Workflow**:
+1. You struggle through a task and finally get it right
+2. You say: "Capture this as a skill called 'ask-deployment-protocol'"
+3. The agent analyzes the conversation and generates the `SKILL.md`
+4. You verify and save it
+
+---
+
 ### 🚀 Quick Start with Skills
 
 ```bash
