@@ -52,17 +52,9 @@ class ClaudeAdapter(BaseAdapter):
 
         return "\n".join(sections) + "\n"
 
-    def install_resources(self, skill: Dict, target_dir: Path, dry_run: bool = False) -> Dict[str, bool]:
+    def install_resources(self, skill: Dict, target_dir: Path, dry_run: bool = False, force: bool = False) -> Dict[str, bool]:
         """
         Install scripts and sidecar files to a hidden .scripts directory.
-        structure:
-        ~/.claude/commands/
-          - skill-name.md
-          - .scripts/
-             - skill-name/
-                - scripts/
-                - reference.md
-                - examples.md
         """
         import shutil
         
@@ -79,12 +71,13 @@ class ClaudeAdapter(BaseAdapter):
         
         # Check for conflicts
         conflicts = []
-        if scripts_src and (storage_dir / "scripts").exists():
-            conflicts.append(f"Directory exists: {storage_dir / 'scripts'}")
-        if ref_src and (storage_dir / "reference.md").exists():
-            conflicts.append(f"File exists: {storage_dir / 'reference.md'}")
-        if ex_src and (storage_dir / "examples.md").exists():
-             conflicts.append(f"File exists: {storage_dir / 'examples.md'}")
+        if not force:
+            if scripts_src and (storage_dir / "scripts").exists():
+                conflicts.append(f"Directory exists: {storage_dir / 'scripts'}")
+            if ref_src and (storage_dir / "reference.md").exists():
+                conflicts.append(f"File exists: {storage_dir / 'reference.md'}")
+            if ex_src and (storage_dir / "examples.md").exists():
+                 conflicts.append(f"File exists: {storage_dir / 'examples.md'}")
              
         if conflicts:
             return {"conflict": True, "details": ", ".join(conflicts)}

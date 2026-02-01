@@ -37,10 +37,12 @@ class AntigravityAdapter(BaseAdapter):
         """
         name = skill.get("name", "Unknown")
         description = skill.get("description", "")
+        version = skill.get("version", "0.0.0")
         readme = get_skill_readme(skill) or ""
         
         content = f"""---
 name: {name}
+version: {version}
 description: {description}
 ---
 
@@ -48,7 +50,7 @@ description: {description}
 """
         return content
 
-    def install_resources(self, skill: Dict, target_dir: Path, dry_run: bool = False) -> Dict[str, bool]:
+    def install_resources(self, skill: Dict, target_dir: Path, dry_run: bool = False, force: bool = False) -> Dict[str, bool]:
         """
         Install scripts and sidecar files to the skill directory.
         """
@@ -66,7 +68,7 @@ description: {description}
         for resource in resources_to_copy:
             src = skill_path / resource
             dst = target_dir / resource
-            if src.exists() and dst.exists():
+            if src.exists() and dst.exists() and not force:
                  conflicts.append(f"Resource exists: {dst}")
 
         if conflicts:
@@ -81,8 +83,13 @@ description: {description}
             dst = target_dir / resource
             
             if src.exists():
+                if force and dst.exists():
+                    if dst.is_dir():
+                        shutil.rmtree(dst)
+                    else:
+                        dst.unlink()
+
                 if src.is_dir():
-                    # copytree fails if dst exists, but we checked conflicts above
                     shutil.copytree(src, dst)
                 else:
                     shutil.copy2(src, dst)

@@ -53,7 +53,7 @@ class CursorAdapter(BaseAdapter):
              
         return content
 
-    def install_resources(self, skill: Dict, target_dir: Path, dry_run: bool = False) -> Dict[str, bool]:
+    def install_resources(self, skill: Dict, target_dir: Path, dry_run: bool = False, force: bool = False) -> Dict[str, bool]:
         """
         Install scripts and sidecar files to .cursor/rules/.scripts/<skill-name>/
         """
@@ -81,7 +81,7 @@ class CursorAdapter(BaseAdapter):
         for resource in resources_to_copy:
             src = skill_path / resource
             dst = storage_dir / resource
-            if src.exists() and dst.exists():
+            if src.exists() and dst.exists() and not force:
                  conflicts.append(f"Resource exists: {dst}")
 
         if conflicts:

@@ -26,43 +26,50 @@ def get_all_skills() -> List[Dict]:
             continue
         
         # Walk through skill directories in each category
-        for skill_dir in category_dir.iterdir():
-            if not skill_dir.is_dir() or skill_dir.name.startswith("."):
-                continue
-            
-            skill_yaml = skill_dir / "skill.yaml"
-            if skill_yaml.exists():
+        try:
+            # Safely iterate
+            for skill_dir in category_dir.iterdir():
                 try:
-                    skill = parse_skill(skill_yaml)
-                    if skill:
-                        skill["_path"] = str(skill_dir)
-                        
-                        # Detect instruction file (prefer SKILL.md)
-                        skill_md = skill_dir / "SKILL.md"
-                        readme_md = skill_dir / "README.md"
-                        if skill_md.exists():
-                            skill["_instruction_file"] = str(skill_md)
-                        elif readme_md.exists():
-                            skill["_instruction_file"] = str(readme_md)
+                    if not skill_dir.is_dir() or skill_dir.name.startswith("."):
+                        continue
+                except (PermissionError, OSError):
+                    continue
+                
+                skill_yaml = skill_dir / "skill.yaml"
+                if skill_yaml.exists():
+                    try:
+                        skill = parse_skill(skill_yaml)
+                        if skill:
+                            skill["_path"] = str(skill_dir)
                             
-                        # Detect sidecars
-                        ref_md = skill_dir / "reference.md"
-                        if ref_md.exists():
-                            skill["_reference"] = str(ref_md)
-                            
-                        ex_md = skill_dir / "examples.md"
-                        if ex_md.exists():
-                            skill["_examples"] = str(ex_md)
-                            
-                        # Detect scripts
-                        scripts_dir = skill_dir / "scripts"
-                        if scripts_dir.exists() and scripts_dir.is_dir():
-                            skill["_scripts"] = str(scripts_dir)
-                            
-                        skills.append(skill)
-                except Exception:
-                    # Skip malformed skills
-                    pass
+                            # Detect instruction file (prefer SKILL.md)
+                            skill_md = skill_dir / "SKILL.md"
+                            readme_md = skill_dir / "README.md"
+                            if skill_md.exists():
+                                skill["_instruction_file"] = str(skill_md)
+                            elif readme_md.exists():
+                                skill["_instruction_file"] = str(readme_md)
+                                
+                            # Detect sidecars
+                            ref_md = skill_dir / "reference.md"
+                            if ref_md.exists():
+                                skill["_reference"] = str(ref_md)
+                                
+                            ex_md = skill_dir / "examples.md"
+                            if ex_md.exists():
+                                skill["_examples"] = str(ex_md)
+                                
+                            # Detect scripts
+                            scripts_dir = skill_dir / "scripts"
+                            if scripts_dir.exists() and scripts_dir.is_dir():
+                                skill["_scripts"] = str(scripts_dir)
+                                
+                            skills.append(skill)
+                    except Exception:
+                        # Skip malformed skills
+                        pass
+        except (PermissionError, OSError):
+            continue
     
     return skills
 

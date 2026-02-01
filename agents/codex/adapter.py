@@ -54,7 +54,7 @@ class CodexAdapter(BaseAdapter):
 """
         return content
 
-    def install_resources(self, skill: Dict, target_dir: Path, dry_run: bool = False) -> Dict[str, bool]:
+    def install_resources(self, skill: Dict, target_dir: Path, dry_run: bool = False, force: bool = False) -> Dict[str, bool]:
         """
         Install scripts and sidecar files to the instructions directory.
         """
@@ -66,9 +66,6 @@ class CodexAdapter(BaseAdapter):
             
         skill_path = Path(skill_path_str)
         # Codex skills go into instructions/filename.md, so we copy resources to instructions/
-        # target_dir in install_resources is the PARENT of the skill file
-        # For codex, get_target_path returns .../instructions/<skill>.md
-        # So target_dir passed here is .../instructions/
         
         dest_dir = target_dir
         
@@ -79,7 +76,7 @@ class CodexAdapter(BaseAdapter):
         for resource in resources_to_copy:
             src = skill_path / resource
             dst = dest_dir / resource
-            if src.exists() and dst.exists():
+            if src.exists() and dst.exists() and not force:
                  conflicts.append(f"Resource exists: {dst}")
 
         if conflicts:
