@@ -22,32 +22,44 @@ This skill helps you review your code, stage changes, and prepare commit message
 3.  **Fix/Refactor**:
     -   If valid issues are found, apply the fixes directly to the files.
 
-## 2. Stage Changes
+## 2. Safety Check
+
+**Goal**: Ensure no sensitive data or temporary code is committed.
+
+### Instructions:
+1.  **Scan Content**: Check the files you are about to stage/review for:
+    -   **Secrets**: API keys, exact tokens, passwords.
+    -   **Debug Code**: `print()`, `console.log()`, `dd()`, etc. (unless necessary for the script).
+    -   **Markers**: `TODO`, `FIXME`, `HACK`.
+2.  **Warn User**: If any are found, explicitly ask the user if they intend to commit them.
+
+## 3. Stage Changes
 
 **Goal**: Stage the files after review and fixes.
 
 ### Instructions:
-1.  Run `git add <file>` for the files you reviewed and fixed.
-2.  If you are confident, you may run `git add .` to stage all changes, but prefer adding specific files to be precise.
+1.  Run `git add <file>` for the specific files you reviewed and fixed.
+2.  **Avoid** `git add .` unless you are certain it won't include unwanted files (like `.DS_Store` or logs).
 
-## 3. Prompt Commit Note
+## 4. Prompt Commit Note
 
-**Goal**: Generate commit messages for the user to choose from.
+**Goal**: Generate commit messages following **Conventional Commits**.
 
 ### Instructions:
 1.  Analyze the staged changes (`git diff --cached`).
-2.  Draft two versions of the commit message:
-    -   **Option 1 (Long)**: A detailed message describing *why* and *what* changed.
-    -   **Option 2 (Short)**: A concise, one-line summary (imperative mood, e.g., "Add feature X").
-3.  Present these options to the user clearly.
+2.  Draft two versions using the [Conventional Commits](https://www.conventionalcommits.org/) format (`type(scope): description`):
+    -   **Option 1 (Detailed)**: `type(scope): subject` followed by a body explaining *why* and *what*.
+    -   **Option 2 (Short)**: Just the `type(scope): subject` line.
+    -   *Types include: `feat`, `fix`, `docs`, `style`, `refactor`, `test`, `chore`.*
+3.  Present these options to the user.
 
-## 4. Manual Commit
+## 5. Manual Commit
 
 **Goal**: Let the user finalize the commit.
 
 ### Instructions:
 1.  Do **not** run `git commit` yourself.
-2.  Provide the `git commit -m "..."` command for the chosen message (or tell the user they can copy-paste their preferred message).
+2.  Provide the `git commit -m "..."` command for the chosen message.
 3.  Example output:
-    > Here is the command to commit with the short message:
-    > `git commit -m "Your short message here"`
+    > Here is the command to commit:
+    > `git commit -m "feat(auth): implement login flow"`

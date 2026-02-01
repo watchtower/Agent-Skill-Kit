@@ -5,8 +5,9 @@ This skill helps you review your code, stage changes, and prepare commit message
 ## Features
 
 -   **Code Review**: Automatically reviews recently created files for bugs and refactoring opportunities.
+-   **Safety Checks**: Scans for secrets, debug code, and TODOs before committing.
 -   **Staging**: Stages files after review.
--   **Commit Messages**: Generates short and long commit message options.
+-   **Commit Messages**: Generates **Conventional Commits** (e.g., `feat: ...`, `fix: ...`) options.
 -   **Manual Control**: Provides the final command for the user to run.
 
 ## Usage

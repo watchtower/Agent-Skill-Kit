@@ -1,5 +1,5 @@
 name: ask-commit-assistance
-version: 1.0.0
+version: 1.0.1
 category: coding
 description: Assist with code review, staging, and committing changes.
 tags:
